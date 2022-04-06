@@ -4,6 +4,9 @@
 #include <chrono>
 #include <thread>
 
+// Header for access to mutex, concurrency support library.
+#include <mutex>
+
 // Set the interval for when the application should process data, in milliseconds:
 #define TIME_STEP_INTERVAL 1000
 
@@ -21,5 +24,10 @@ struct SENSOR_DATA
 } typedef SENSOR_DATA;
 
 // By declaring an extern variable representing a pointer to the current sensor data, each source file that includes data.h is able to reference it.
-// It is declared and instantiated in main.cpp.
+// It is instantiated in main.cpp.
 extern SENSOR_DATA *currentSensorData;
+
+// By declaring a mutex for the current sensor data, a thread can use it as a locking mechanism while it is either reading the data in the struct or updating the data in the struct.
+// The mutex is required for thread-safe sharing of the same struct of data. By declaring it as an extern, code from files that include data.h will be able to reference it.
+// It is instantiated in main.cpp.
+extern std::mutex sensorDataMutex;

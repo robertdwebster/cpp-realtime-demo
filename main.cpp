@@ -6,17 +6,23 @@
 
 #include <iostream>
 #include <csignal>
-#include <unistd.h>
+#include <unistd.h> // required for getpid()
 #include "data.h"
 #include "listener.h"
 
-// Initialize an instance of the SENSOR_DATA struct, to be shared between the threads
+// Initialize an instance of the SENSOR_DATA struct, to be shared between the threads.
+// To answer the question, why does this struct need to be shared between threads? 
+// 1. One thread is constantly trying to update this struct with the most up to date data.
+// 2. One thread is constantly trying to read the data within the struct so that it can be processed somehow.
 SENSOR_DATA* currentSensorData = new SENSOR_DATA;
+
+// Initialize a mutex, to be used by threads for locking read/write access to the currentSensorData struct.
+std::mutex sensorDataMutex;
 
 // This is the interrupt service routine for a SIGUSR1 interrupt. 
 // In this application, the interrupt is thrown every TIME_STEP_INTERVAL - see main() below.
 // The main process will stop execution and service the interrupt.
-void processData(int signal){
+void processData(int signal) {
 
     std::cout << "processData() was called\n";
 
@@ -35,7 +41,7 @@ void processData(int signal){
         return; // Return and wait another time step.
     }
 
-    // Set overrun to true to signify the task has started.
+    // Set overrun to true to signify the processing function has started.
     overrun = true;
 
     // With the task started, re-enable the SIGUSR1 interrupt. Other interrupts will trigger processData but return until this execution is complete.
