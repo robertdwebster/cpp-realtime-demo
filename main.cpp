@@ -14,7 +14,7 @@
 // To answer the question, why does this struct need to be shared between threads? 
 // 1. One thread is constantly trying to update this struct with the most up to date data.
 // 2. One thread is constantly trying to read the data within the struct so that it can be processed somehow.
-SENSOR_DATA* currentSensorData = new SENSOR_DATA;
+SENSOR_DATA currentSensorData{};
 
 // Initialize a mutex, to be used by threads for locking read/write access to the currentSensorData struct.
 std::mutex sensorDataMutex;
