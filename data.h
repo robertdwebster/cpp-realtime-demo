@@ -12,7 +12,7 @@
 
 /* The definition for the struct of data representing readings from the sensor.
 For this example program, we'll say this "sensor" sends the main application three data values:
-1. Wind speed, in kilometers per hour
+1. Wind speed, in meters per second
 3. Latitude location of the sensor 
 4. Longitude location of the sensor
 */
@@ -30,4 +30,4 @@ extern SENSOR_DATA currentSensorData;
 // By declaring a mutex for the current sensor data, a thread can use it as a locking mechanism while it is either reading the data in the struct or updating the data in the struct.
 // The mutex is required for thread-safe sharing of the same struct of data. By declaring it as an extern, code from files that include data.h will be able to reference it.
 // It is instantiated in main.cpp.
-extern std::mutex sensorDataMutex;
+extern std::mutex currentSensorDataMutex;

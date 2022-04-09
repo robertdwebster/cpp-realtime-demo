@@ -1,6 +1,6 @@
 // This is the entry point for the application.
 
-/* The main application will have three threads:
+/* The main application will declare three threads:
 1. Listener thread for the latest data from the "sensor" over UDP.
 2. A "timer" thread which raises an interrupt on the process, triggering a function that processes the latest data.
 3. The main thread of the process, which continues running while waiting for an interrupt.
@@ -14,12 +14,12 @@
 
 // Initialize an instance of the SENSOR_DATA struct, to be shared between the threads.
 // Why does this struct need to be shared between threads? 
-// 1. One thread is constantly trying to update this struct with the most up to date data.
-// 2. One thread is constantly trying to read the data within the struct so that it can be processed somehow.
+// 1. One thread is constantly trying to update this struct with the most up to date data from the sensor (job of the listener).
+// 2. One thread is constantly trying to read the data within the struct so that it can be "processed" - in our case, writing it to the console.
 SENSOR_DATA currentSensorData{};
 
 // Initialize a mutex, to be used by threads for locking read/write access to the currentSensorData struct.
-std::mutex sensorDataMutex;
+std::mutex currentSensorDataMutex;
 
 // This is the interrupt service routine for a SIGUSR1 interrupt. 
 // In this application, the interrupt is thrown every TIME_STEP_INTERVAL - see main() below.
@@ -38,8 +38,10 @@ void processData(int signal) {
     std::signal(SIGUSR1, SIG_IGN);
 
     // Check for overrun - if some other processData is still running, the OverrunFlag must be true:
+    // In which case, re-enable the interrupt handler and wait another time step.
     if (overrun) {
-        std::cout << "processData() overrun\n";
+        std::cout << "processData() overrun - re-enable interrupt and try again\n";
+        std::signal(SIGUSR1, processData);
         return; // Return and wait another time step.
     }
 
@@ -50,8 +52,14 @@ void processData(int signal) {
     std::signal(SIGUSR1, processData);
 
     // "Process" the data here.
-    // read the sensor data.
-    std::cout << "processing data\n";
+    // steps are, lock mutex, read the currentSensorData values, print them to the console. 
+    // Potential to move this printing into a function defined in the SENSOR_DATA struct later.
+    currentSensorDataMutex.lock();
+    std::cout << "Data received.\n";
+    std::cout << "     windspeed: " << currentSensorData.windspeed << " m/s\n";
+    std::cout << "     latitude: " << currentSensorData.latitude << "\n";
+    std::cout << "     longitude: " << currentSensorData.longitude << "\n";
+    currentSensorDataMutex.unlock();
 
     // Indicate the task is complete, set overrun to false.
     overrun = false;
