@@ -23,8 +23,8 @@ struct SENSOR_DATA
     float longitude;
 } typedef SENSOR_DATA;
 
-// By declaring an extern struct variable representing the current sensor data, each source file that includes data.h is able to reference the data.
-// It is instantiated in main.cpp.
+// By declaring an extern struct variable representing the current sensor data, each source file that includes data.h is able to reference the variable instantiated in main.cpp.
+// This limits the scope from a global variable, to only those source files that include the data.h file.
 extern SENSOR_DATA currentSensorData;
 
 // By declaring a mutex for the current sensor data, a thread can use it as a locking mechanism while it is either reading the data in the struct or updating the data in the struct.

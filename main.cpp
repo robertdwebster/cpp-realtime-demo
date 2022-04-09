@@ -1,3 +1,5 @@
+// This is the entry point for the application.
+
 /* The main application will have three threads:
 1. Listener thread for the latest data from the "sensor" over UDP.
 2. A "timer" thread which raises an interrupt on the process, triggering a function that processes the latest data.
@@ -11,7 +13,7 @@
 #include "listener.h"
 
 // Initialize an instance of the SENSOR_DATA struct, to be shared between the threads.
-// To answer the question, why does this struct need to be shared between threads? 
+// Why does this struct need to be shared between threads? 
 // 1. One thread is constantly trying to update this struct with the most up to date data.
 // 2. One thread is constantly trying to read the data within the struct so that it can be processed somehow.
 SENSOR_DATA currentSensorData{};
