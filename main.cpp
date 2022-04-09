@@ -37,10 +37,10 @@ void processData(int signal) {
     // Disable the interrupt for SIGUSR1, so that interrupts triggered while checking for an overrun are ignored
     std::signal(SIGUSR1, SIG_IGN);
 
-    // Check for overrun - if some other processData is still running, the OverrunFlag must be true:
-    // In which case, re-enable the interrupt handler and wait another time step.
+    // Check for overrun while the interrupt is disabled - if some other processData is still running, the OverrunFlag must be true.
+    // If it is, re-enable the interrupt handler and return so another time step can pass.
     if (overrun) {
-        std::cout << "processData() overrun - re-enable interrupt and try again\n";
+        std::cout << "processData() overrun - re-enable interrupt and wait another time step\n";
         std::signal(SIGUSR1, processData);
         return; // Return and wait another time step.
     }
