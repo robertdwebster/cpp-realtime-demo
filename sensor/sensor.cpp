@@ -6,7 +6,7 @@
     Once data is received, the new data is copied into the currentSensorData struct, which the main.cpp functions also have access to.
 */
 
-// Include statements are consolidated to sensorData.h
+// Include statements are consolidated to sensorData.h.
 #include "sensorData.h"
 
 
