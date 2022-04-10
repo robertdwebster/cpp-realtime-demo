@@ -1,12 +1,14 @@
-// The "sensor" application will send new SENSOR_DATA to the main application according to a time interval.
-// It is not compiled as part of the main executable, it is meant to represent a completely separate executable and entity.
+/*
+    The purpose of sensor.cpp is to represent a near real-time wind sensor, which is continually sending data to the main application over UDP.
+    It is not compiled as part of the main executable, it is meant to represent a completely separate executable and entity.
+    
+    The receiveFromSensor() function opens a port for UDP socket communication, and continually listens for data from the sensor application on this port.
+    Once data is received, the new data is copied into the currentSensorData struct, which the main.cpp functions also have access to.
+*/
 
 #include "sensorData.h"
 
 #include <iostream>
-
-// Include statement to access the memset function
-#include <cstring>
 
 // Include statements required for socket communication
 #include <arpa/inet.h>
@@ -14,13 +16,10 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-/*
-    Add main function description
-*/
 int main () {
 
-    int socketFD;                               // Socket file descriptor
-    struct sockaddr_in destinationSockAddr;     // A sockaddr_in struct representing the "destination" address, this is describing the server's IP address and port.
+    int socketFD;                                   // Socket file descriptor
+    struct sockaddr_in destinationSockAddr = {};    // A sockaddr_in struct representing the "destination" address, this is describing the server's IP address and port.
         
     // Initialize variables for destination IP address and port
     char serverIP[] = SEND_IP;
@@ -36,7 +35,6 @@ int main () {
     }
 
     // Construct the sockaddr_in struct needed to define the server's address, i.e. the IP and port which listener.cpp is running on
-    memset(&destinationSockAddr, 0, sizeof(destinationSockAddr));   // Zero out structure
     destinationSockAddr.sin_family = AF_INET;                       // Set internet address family constant to specify use of IPv4 addresses
     destinationSockAddr.sin_addr.s_addr = inet_addr(serverIP);      // IP address of the server set as SEND_IP defined in sensorData.h
     destinationSockAddr.sin_port = htons(serverPort);               // Use htons() to convert the destination port from "host byte order" to "network byte order" (big endian)
@@ -54,6 +52,13 @@ int main () {
     // In this case, specify the MSG_DONTROUTE flag so that the destination address must refer to a local network interface (loopback).
     // This is another check to ensure data is not sent out over UDP to on any other network interfaces.
     flags = MSG_DONTROUTE;
+
+    // Initialize variables for random number generation of wind speed.
+    // It's meant to simulate a real-time device.
+
+
+
+
 
     // Generate and send sensor data until program is exited manually - send data according to the SENSOR_SEND_INTERVAL in sensorData.h
     while (true) {
