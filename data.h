@@ -1,14 +1,17 @@
-// Contains include statements for headers, as well as a central place to declare the time intervals used throughout the application.
+// Contains include statements for common headers, as well as a central place to declare the time intervals used throughout the application.
 
-// Headers for using time interrupts:
-#include <chrono>
-#include <thread>
+// Header for standard input/output stream
+#include <iostream>
 
 // Header for access to mutex, concurrency support library.
 #include <mutex>
 
 // Set the interval for when the application should process data, in milliseconds:
-#define TIME_STEP_INTERVAL 1000
+#define TIME_STEP_INTERVAL 5000
+
+// Set the port and IP address that the listener will bind to for data from the sensor over UDP
+#define LISTENER_PORT 41011
+#define LISTENER_IP "127.0.0.1"
 
 /* The definition for the struct of data representing readings from the sensor.
 For this example program, we'll say this "sensor" sends the main application three data values:

@@ -6,9 +6,13 @@
 3. The main thread of the process, which continues running while waiting for an interrupt.
 */
 
-#include <iostream>
+// Include statements for threads, interrupt, and access to sleep/time functions
 #include <csignal>
 #include <unistd.h> // required for getpid()
+#include <thread>
+#include <chrono>
+
+// Headers for common variables and the listener.
 #include "data.h"
 #include "listener.h"
 
@@ -55,7 +59,7 @@ void processData(int signal) {
     // steps are, lock mutex, read the currentSensorData values, print them to the console. 
     // Potential to move this printing into a function defined in the SENSOR_DATA struct later.
     currentSensorDataMutex.lock();
-    std::cout << "Data received.\n";
+    std::cout << "Printing last known data from sensor.\n";
     std::cout << "     windspeed: " << currentSensorData.windspeed << " m/s\n";
     std::cout << "     latitude: " << currentSensorData.latitude << "\n";
     std::cout << "     longitude: " << currentSensorData.longitude << "\n";
