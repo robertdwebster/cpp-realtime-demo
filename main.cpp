@@ -30,8 +30,6 @@ std::mutex currentSensorDataMutex;
 // The main process will stop execution and service the interrupt.
 void processData(int signal) {
 
-    std::cout << "processData() was called\n";
-
     // This overrun variable represents whether processData() is currently running.
     // In C++, static variables are declared once for the lifetime of a program. 
     // It is assigned to false on the first run of processData(), but will not be reinitialized to false each time the function is called.
@@ -70,9 +68,7 @@ void processData(int signal) {
 
 }
 
-int main (int argc, char *argv[]) {
-
-    std::cout << "entered main\n";
+int main() {
     
     // Set the signal handler for SIGUSR1, a user-defined signal which we will use as the real-time "timer", to be nothing for now.
     std::signal(SIGUSR1, SIG_IGN);
