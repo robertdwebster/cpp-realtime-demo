@@ -16,13 +16,13 @@
 #include "data.h"
 #include "listener.h"
 
-// Initialize an instance of the SENSOR_DATA struct, to be shared between the threads.
+// Define an instance of the SENSOR_DATA struct, to be shared between the threads.
 // Why does this struct need to be shared between threads? 
 // 1. One thread is constantly trying to update this struct with the most up to date data from the sensor (job of the listener).
 // 2. One thread is constantly trying to read the data within the struct so that it can be "processed" - in our case, writing it to the console.
 SENSOR_DATA currentSensorData{};
 
-// Initialize a mutex, to be used by threads for locking read/write access to the currentSensorData struct.
+// Define a mutex, to be used by threads for locking read/write access to the currentSensorData struct.
 std::mutex currentSensorDataMutex;
 
 // This is the interrupt service routine for a SIGUSR1 interrupt. 

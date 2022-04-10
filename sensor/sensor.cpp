@@ -6,18 +6,13 @@
     Once data is received, the new data is copied into the currentSensorData struct, which the main.cpp functions also have access to.
 */
 
+// Include statements are consolidated to sensorData.h
 #include "sensorData.h"
 
-#include <iostream>
 
-// Include statements required for socket communication
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/types.h>
-#include <sys/socket.h>
+int main() {
 
-int main () {
-
+    // Begin code for initializing UDP communication.
     int socketFD;                                   // Socket file descriptor
     struct sockaddr_in destinationSockAddr = {};    // A sockaddr_in struct representing the "destination" address, this is describing the server's IP address and port.
         
@@ -25,7 +20,7 @@ int main () {
     char serverIP[] = SEND_IP;
     unsigned short serverPort = SEND_PORT;
 
-    // Variable created to specify any flags for the sendto() call
+    // Variable to specify any flags for the sendto() call
     int flags;
 
     // Create socket for sending over UDP
@@ -53,20 +48,24 @@ int main () {
     // This is another check to ensure data is not sent out over UDP to on any other network interfaces.
     flags = MSG_DONTROUTE;
 
-    // Initialize variables for random number generation of wind speed.
-    // It's meant to simulate a real-time device.
+    // Initialize variables for random number generation of wind speed
+    float newWindSpeedReading = 0.0;
+    std::random_device rd;
+    std::default_random_engine random_engine(rd());
 
-
-
-
+    // Define a uniform distribution between WINDSPEED_MIN AND WINDSPEED_MAX to generate a random average wind speed for the lifetime of the sensor program
+    std::uniform_real_distribution<float> uniform_dist(WINDSPEED_MIN, WINDSPEED_MAX);
 
     // Generate and send sensor data until program is exited manually - send data according to the SENSOR_SEND_INTERVAL in sensorData.h
     while (true) {
         
+        // Wait for one SENSOR_SEND_INTERVAL before generating and sending data.
         std::this_thread::sleep_for(std::chrono::milliseconds(SENSOR_SEND_INTERVAL));
 
-        // TODO: replace this with a randomly generated variable to simulate actual the wind speed variation with each sent struct
-        dataToSend = {4.0000000, 39.093314910681286, -84.50985879586851};
+        // Call the normal distribution to generate a new wind speed reading, then update the dataToSend struct with this data.
+        newWindSpeedReading = uniform_dist(random_engine);
+        std::cout << "Current wind speed: " << newWindSpeedReading << " m/s\n";
+        dataToSend = {newWindSpeedReading, SENSOR_LATITUDE, SENSOR_LONGITUDE};
 
         // Send the newly generated data to the listener. Detect any errors by checking for -1, and exit if so.
         // https://pubs.opengroup.org/onlinepubs/007904875/functions/sendto.html
