@@ -5,11 +5,11 @@
 In real-time applications, data often needs to be accessed or mutated by multiple threads at once. Threads may also be used to trigger interrupts for time-sharing applications. This project attempts to demonstrate the sharing of a single struct between threads in a safe manner using mutex locks, and the use of threads to process the data in the struct once a given time interval has passed.
 
 The project has two components which demonstrate this.
-1. **sensor.out**: The "data source" for the project - meant to model a sensor which is providing a stream of real-time data to the main application. The sensor continuously sends randomly generated value, representing wind speed, over UDP according to a defined time interval.
+1. **sensor.out**: The "data source" for the project - meant to model a wind speed sensor which is providing a stream of real-time "live" data to the main application. The sensor continuously sends a randomly generated value representing the wind speed over UDP according to a defined time interval. It also sends a latitude and longitude reading of where the sensor is physically placed.
 2. **main.out**: The core application, which is continuously listening for the latest data from the sensor over UDP. According to a set time interval, and independently from the sensor, prints the latest data received.
 
 **How are these concepts relevant to a real application?**
-In a real-time application environment, such as software running on a vehicle, an interface to manage incoming data from other onboard devices can be defined in a language such as C++. Further, the overall structure of main.cpp, with a 'processData()' function and independent threads of execution to handle various functions, could be used in a similar way to provide live input to something like a code-generated Simulink model from Simulink Embedded Coder.
+In a real-time application environment, such as software controls running on a car or plane, an interface to manage incoming data from other onboard devices can be defined in a language such as C++. Further, the overall structure of main.cpp, with a ```processData()``` function and independent threads of execution to handle various functions, could be used in a similar way to provide live input to a code-generated Simulink model.
 
 ## Repository Structure
 * sensor - directory containing components for the separate sensor executable
@@ -19,9 +19,9 @@ In a real-time application environment, such as software running on a vehicle, a
 * .gitignore
 * README.md
 * data.h - contains common definitions and include statements for main.cpp
-* listener.cpp - C++ source for the listener for the main application
-* listener.h - listener header file, included by main.cpp
-* main.cpp - defines main method, thread execution, and processData() function
+* listener.cpp - C++ source for the main application's listener for data from the sensor
+* listener.h - listener header file, which is included by main.cpp
+* main.cpp - defines main method, thread execution, and the processData() function
 * makefile - contains compile commands for the main application
 
 ## Compiling and Running
@@ -32,4 +32,4 @@ Both the main application and the sensor have their own makefiles which define c
 3. Run the main application with ```./main.out```.
 4. Run the sensor application with ```./sensor.out```.
 
-To remove all generated objects and executables, run ```make clean``` in the main project directory and in the ```/sensor``` directory.
+To remove all generated objects and executables, run ```make clean``` both in the main project directory and in the ```/sensor``` directory.
