@@ -1,6 +1,6 @@
 # cpp-realtime-demo
 
-![The John A. Roebling Bridge between Covington, Kentucky and Cincinnati, Ohio.](/img/roebling.jpg)
+![The John A. Roebling Bridge between Covington, Kentucky and Cincinnati, Ohio. Image 'Roebling Suspension Bridge at night.jpg' used with permission and without changes, from Wikimedia Commons, author EEJCC, under the Creative Commons Attribution-Share Alike 4.0 International license, https://creativecommons.org/licenses/by-sa/4.0/deed.e](/img/roebling.jpg)
 
 In real-time applications, data often needs to be accessed or mutated by multiple threads at once. Threads may also be used to trigger interrupts for time-sharing applications. This project attempts to demonstrate the sharing of a single struct between threads in a safe manner using mutex locks, and the use of threads to process the data in the struct once a given time interval has passed.
 
