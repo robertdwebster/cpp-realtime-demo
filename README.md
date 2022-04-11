@@ -25,6 +25,8 @@ In a real-time application environment, such as software controls running on a c
 * makefile - contains compile commands for the main application
 
 ## Compiling and Running
+This project was developed on a Linux computer and proper function may depend on the use of a Unix machine to execute. Compilation is performed using the g++ compiler.
+
 Both the main application and the sensor have their own makefiles which define compile commands and a ```make clean``` command.
 
 1. Compile the main application. Run ```make``` in the root project directory.
