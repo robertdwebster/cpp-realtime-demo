@@ -7,7 +7,7 @@
 #include <mutex>
 
 // Set the interval for when the application should process data, in milliseconds:
-#define TIME_STEP_INTERVAL 5000
+#define TIME_STEP_INTERVAL 3000
 
 // Set the port and IP address that the listener will bind to for data from the sensor over UDP
 #define LISTENER_PORT 41011

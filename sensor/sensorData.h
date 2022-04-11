@@ -9,7 +9,7 @@
 // Header for standard input/output stream
 #include <iostream>
 
-// Headers for using time interrupts:
+// Headers for using thread sleep functions:
 #include <chrono>
 #include <thread>
 

@@ -69,7 +69,7 @@ void receiveFromSensor() {
 
         // Lock the sensor data mutex, copy the new data into the currentSensorData struct, then unlock the sensor data mutex.
         currentSensorDataMutex.lock();
-        std::cout << "receiveFromSensor() is copying from sampleSensorData to currentSensorData\n";
+        std::cout << "listener.cpp received data from sensor. Copying new data from sampleSensorData to currentSensorData.\n";
         currentSensorData.windspeed = newSensorData->windspeed;
         currentSensorData.latitude = newSensorData->latitude;
         currentSensorData.longitude = newSensorData->longitude;
