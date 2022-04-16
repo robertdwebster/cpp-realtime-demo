@@ -36,7 +36,10 @@ void processData(int signal) {
     // This allows the variable to be only be accessible within this function, while saving its value for the next function call.
     static bool overrun = false;
 
-    // Disable the interrupt for SIGUSR1, so that interrupts triggered while checking for an overrun are ignored
+    // Disable the interrupt for SIGUSR1, so that interrupts triggered while checking for an overrun are ignored.
+    // This is because the function calls in this service handler are not all signal-safe by the Linux/UNIX documentation standard.
+    // Problems with unsafe functions are avoided by ignoring any incoming SIGUSR1 signals from the other threads.
+    // https://man7.org/linux/man-pages/man7/signal-safety.7.html
     std::signal(SIGUSR1, SIG_IGN);
 
     // Check for overrun while the interrupt is disabled - if some other processData is still running, the OverrunFlag must be true.
@@ -96,6 +99,7 @@ int main() {
 
     // After creating a thread to execute the listener function and another to control real-time execution via interrupts,
     // The main thread of the process continues here to service a SIGUSR1 interrupt every TIME_STEP_INTERVAL.
+    // TODO: this is wasteful and should be replaced with a thread wait call, see open issue.
     while (true) {
 
         // Wait for an interrupt from the timer thread.
