@@ -12,26 +12,28 @@ The project has two components which demonstrate this.
 In a real-time application environment, such as software controls running on a car or plane, interfaces for managing incoming data from other onboard devices could be defined in a language such as C++. Further, the overall structure of main.cpp, with a ```processData()``` function and threads of execution to concurrently execute independent features, could be used in a similar way to provide real-time input to another device or to a code-generated Simulink model.
 
 ## Repository Structure
-* sensor - directory containing components for the separate sensor executable
-    * makefile - contains compile commands for the sensor application
-    * sensor.cpp - C++ source for the sensor, generates and sends data over UDP
-    * sensorData.h - sensor header file for definitions and include statements
-* .gitignore
-* README.md
-* data.h - contains common definitions and include statements for main.cpp
-* listener.cpp - C++ source for the main application's listener for data from the sensor
-* listener.h - listener header file, which is included by main.cpp
-* main.cpp - defines main method, thread execution, and the processData() function
-* makefile - contains compile commands for the main application
+* **sensor** - directory containing components for the separate sensor executable
+    * **makefile** - contains compile commands for the sensor application
+    * **sensor.cpp** - C++ source for the sensor, generates and sends data over UDP
+    * **sensorData.h** - sensor header file for definitions and include statements
+* **.gitignore**
+* **README.md**
+* **data.h** - contains common definitions and include statements for main.cpp
+* **listener.cpp** - C++ source for the main application's listener for data from the sensor
+* **listener.h** - listener header file, which is included by main.cpp
+* **main.cpp** - defines main method, thread execution, and the processData() function
+* **makefile** - contains compile commands for the main application
 
 ## Compiling and Running
 Since C implementations and standards differ by operating system, this application is intended for use on a Linux machine. Compilation is performed using the g++ compiler.
 
 Both the main application and the sensor have their own makefiles which define compile commands and a ```make clean``` command.
 
+To compile and run this project:
+
 1. Compile the main application. Run ```make``` in the root project directory.
 2. Compile the sensor application. Run ```make``` in the ```/sensor``` directory.
-3. Run the main application with ```./main.out```.
-4. Run the sensor application with ```./sensor.out```.
+3. Run the main application executable first, with ```./main.out```.
+4. Run the sensor application executable second, with ```./sensor.out```.
 
 To remove all generated objects and executables, run ```make clean``` both in the main project directory and in the ```/sensor``` directory.
