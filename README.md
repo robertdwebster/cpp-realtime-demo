@@ -29,11 +29,11 @@ Since C implementations and standards differ by operating system, this applicati
 
 Both the main application and the sensor have their own makefiles which define compile commands and a ```make clean``` command.
 
-To compile and run this project:
+To compile and run this project using two terminals:
 
-1. Compile the main application. Run ```make``` in the root project directory.
-2. Compile the sensor application. Run ```make``` in the ```/sensor``` directory.
-3. Run the main application executable first, with ```./main.out```.
-4. Run the sensor application executable second, with ```./sensor.out```.
+1. Compile the main application using a command terminal. Run ```make``` in the root project directory.
+2. Compile the sensor application with a separate command terminal. Run ```make``` in the ```/sensor``` directory.
+3. In the first command terminal, run the main application executable by calling ```./main.out``` in the root project directory.
+4. In the second command terminal, run the sensor application executable by calling ```./sensor.out``` in the ```/sensor``` directory.
 
 To remove all generated objects and executables, run ```make clean``` both in the main project directory and in the ```/sensor``` directory.
